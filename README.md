@@ -24,7 +24,9 @@ KANBOARD_URL="https://${{RAILWAY_PUBLIC_DOMAIN}}"  # Public URL of your instance
 DATABASE_URL="postgres://${{Postgres.PGUSER}}:${{Postgres.PGPASSWORD}}@${{Postgres.PGHOST}}:${{Postgres.PGPORT}}/${{Postgres.PGDATABASE}}"  # PostgreSQL connection string
 ```
 
-Plugins installed from the interface are **automatically persisted** across restarts and redeployments.
+This implementation uses inotify-tools inside the container for event-driven plugin persistence —
+meaning changes in /var/www/app/plugins are detected immediately and mirrored to the persistent storage (/var/www/app/data/plugins) in real time.
+No polling loop is used, ensuring efficient and low-overhead synchronization.
 
 ---
 
