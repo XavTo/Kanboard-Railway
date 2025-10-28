@@ -27,6 +27,17 @@ if [ -z "$(ls -A "${WEB_PLUGINS}" 2>/dev/null || true)" ] && [ -n "$(ls -A "${PE
   cp -a "${PERSIST_PLUGINS}/." "${WEB_PLUGINS}/" || true
 fi
 
+ASSETS_CSS_DIR="/var/www/app/assets/css"
+if [ -d "${ASSETS_CSS_DIR}" ] && [ ! -f "${ASSETS_CSS_DIR}/app.min.css" ]; then
+  if [ -f "${ASSETS_CSS_DIR}/auto.min.css" ]; then
+    ln -s "${ASSETS_CSS_DIR}/auto.min.css" "${ASSETS_CSS_DIR}/app.min.css"
+    echo "[docker-start] Created symlink app.min.css → auto.min.css"
+  elif [ -f "${ASSETS_CSS_DIR}/light.min.css" ]; then
+    ln -s "${ASSETS_CSS_DIR}/light.min.css" "${ASSETS_CSS_DIR}/app.min.css"
+    echo "[docker-start] Created symlink app.min.css → light.min.css"
+  fi
+fi
+
 # --- Reconcile function: mirror WEB -> DATA exactly (create/update/delete) ---
 mirror_web_to_data() {
   # Remove plugins in DATA that no longer exist in WEB
