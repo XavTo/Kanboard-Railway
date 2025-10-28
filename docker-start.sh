@@ -44,7 +44,7 @@ sync_web_to_data
 (
   while true; do
     sync_web_to_data
-    sleep 2
+    sleep 60
   done
 ) &
 
